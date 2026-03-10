@@ -1,0 +1,60 @@
+{
+  "name": "agentsign",
+  "version": "1.1.0",
+  "description": "Zero Trust Engine for AI Agents — identity, signing, Trust Gate payments, cloud KMS + HSM + Vault support",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "signer.js",
+    "signer.d.ts",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "agentsign",
+    "ai-agent",
+    "zero-trust",
+    "hsm",
+    "pkcs11",
+    "stripe",
+    "trust-gate",
+    "ecdsa",
+    "signing",
+    "mcp",
+    "identity",
+    "kms",
+    "vault",
+    "hashicorp",
+    "gcp",
+    "aws",
+    "azure"
+  ],
+  "author": "CyberSecAI Ltd <contact@agentsign.ai>",
+  "license": "MIT",
+  "homepage": "https://agentsign.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razashariff/agentsign-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/razashariff/agentsign-sdk/issues"
+  },
+  "peerDependencies": {
+    "pkcs11js": ">=2.0.0",
+    "@aws-sdk/client-kms": ">=3.0.0",
+    "@azure/keyvault-keys": ">=4.0.0",
+    "@azure/identity": ">=3.0.0",
+    "@google-cloud/kms": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "pkcs11js": { "optional": true },
+    "@aws-sdk/client-kms": { "optional": true },
+    "@azure/keyvault-keys": { "optional": true },
+    "@azure/identity": { "optional": true },
+    "@google-cloud/kms": { "optional": true }
+  }
+}
