@@ -136,7 +136,7 @@ const signed = agent.sign(
   { invoice: 'INV-001', amount: 350 },           // input
   { status: 'paid', txId: 'tx_abc123' }           // output
 );
-// -> { executionId, executionHash, signature, method: 'HMAC-SHA256', verified: true }
+// -> { executionId, executionHash, signature, method: 'hmac', verified: true }
 
 agent.verify(signed);                              // -> true
 agent.verifyOutput({ status: 'paid', txId: 'tx_abc123' }, signed); // -> 'PASS'
@@ -144,7 +144,7 @@ agent.verifyOutput({ status: 'paid', txId: 'tx_abc123' }, signed); // -> 'PASS'
 
 ## HSM & Cloud KMS Support
 
-Default signer is file-based (HMAC-SHA256, keys at `~/.agentsign/keys/`). For hardware security:
+Default signer is file-based (keyed hashing, keys at `~/.agentsign/keys/`). For hardware security:
 
 | Signer | Install | Use Case |
 |--------|---------|----------|
