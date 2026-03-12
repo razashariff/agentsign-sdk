@@ -1,6 +1,6 @@
 {
   "name": "agentsign",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Zero Trust Engine for AI Agents — identity, signing, Trust Gate payments, cloud KMS + HSM + Vault support",
   "main": "index.js",
   "types": "index.d.ts",
