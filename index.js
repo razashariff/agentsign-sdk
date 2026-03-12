@@ -37,7 +37,7 @@ class AgentSign {
    * @param {Object} [config.pkcs11]       — PKCS#11 config: { library, slot, pin }
    * @param {Object} [config.aws]          — AWS KMS config: { keyId, region }
    * @param {Object} [config.azure]        — Azure KV config: { vaultUrl, keyName }
-   * @param {string} [config.creatorId]    — ProofX creator_id for identity link
+   * @param {string} [config.creatorId]    — External identity anchor
    */
   constructor(config) {
     if (!config || !config.serverUrl) {
@@ -116,7 +116,7 @@ class AgentSign {
     if (opts.source) body.source = opts.source;
     if (opts.githubUrl) body.github_url = opts.githubUrl;
     if (opts.permissions) body.permissions = opts.permissions;
-    if (this._creatorId) body.proofx_creator_id = this._creatorId;
+    if (this._creatorId) body.external_identity_id = this._creatorId;
 
     const res = await this._fetch('POST', '/api/agents/onboard', body);
     this._agentId = res.agent_id;

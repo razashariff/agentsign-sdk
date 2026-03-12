@@ -40,7 +40,7 @@ export interface VaultConfig {
 
 export class FileSigner implements Signer {
   agentId: string;
-  method: 'HMAC-SHA256';
+  method: 'file';
   constructor(agentId: string);
   sign(hash: string): string;
   verify(hash: string, signature: string): boolean;
@@ -49,7 +49,7 @@ export class FileSigner implements Signer {
 
 export class PKCS11Signer implements Signer {
   agentId: string;
-  method: 'PKCS11-ECDSA-P256';
+  method: 'pkcs11';
   constructor(agentId: string, config: PKCS11Config);
   sign(hash: string): string;
   verify(hash: string, signature: string): boolean;
@@ -58,7 +58,7 @@ export class PKCS11Signer implements Signer {
 
 export class AWSKMSSigner implements Signer {
   agentId: string;
-  method: 'AWS-KMS-ECDSA-P256';
+  method: 'aws-kms';
   constructor(agentId: string, config: AWSConfig);
   sign(hash: string): Promise<string>;
   verify(hash: string, signature: string): Promise<boolean>;
@@ -67,7 +67,7 @@ export class AWSKMSSigner implements Signer {
 
 export class AzureKVSigner implements Signer {
   agentId: string;
-  method: 'AZURE-KV-ECDSA-P256';
+  method: 'azure-keyvault';
   constructor(agentId: string, config: AzureConfig);
   sign(hash: string): Promise<string>;
   verify(hash: string, signature: string): Promise<boolean>;
@@ -76,7 +76,7 @@ export class AzureKVSigner implements Signer {
 
 export class GCPKMSSigner implements Signer {
   agentId: string;
-  method: 'GCP-KMS-ECDSA-P256';
+  method: 'gcp-kms';
   constructor(agentId: string, config: GCPConfig);
   sign(hash: string): Promise<string>;
   verify(hash: string, signature: string): Promise<boolean>;
@@ -85,7 +85,7 @@ export class GCPKMSSigner implements Signer {
 
 export class VaultSigner implements Signer {
   agentId: string;
-  method: 'VAULT-TRANSIT';
+  method: 'vault';
   constructor(agentId: string, config: VaultConfig);
   sign(hash: string): Promise<string>;
   verify(hash: string, signature: string): Promise<boolean>;

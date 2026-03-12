@@ -22,7 +22,7 @@
     "pkcs11",
     "stripe",
     "trust-gate",
-    "ecdsa",
+    "cryptographic-signing",
     "signing",
     "mcp",
     "identity",

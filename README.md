@@ -210,7 +210,7 @@ INTAKE --> VETTING --> TESTING --> DEV_APPROVED --> PROD_APPROVED --> ACTIVE
 |---|---|---|---|---|
 | Agent identity | Cryptographic passport | Shared secret | Token (human-centric) | Cert (connection only) |
 | What agent did | Signed execution chain | Nothing | Nothing | Nothing |
-| Tamper detection | SHA-256 hash chain | None | None | None |
+| Tamper detection | Cryptographic hash chain | None | None | None |
 | Trust scoring | 0-100 behavioral | None | Scopes (static) | None |
 | Offline verification | Yes (passport) | No | No | Partial |
 | Swarm revocation | Instant (all agents) | Manual | Manual | CRL lag |

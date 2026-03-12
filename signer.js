@@ -14,12 +14,12 @@ class AgentSignError extends Error {
 }
 
 // ── FileSigner ──────────────────────────────────────────────────────
-// HMAC-SHA256 with auto-generated key stored at ~/.agentsign/keys/{id}.key
+// Keyed hashing with auto-generated key stored at ~/.agentsign/keys/{id}.key
 
 class FileSigner {
   constructor(agentId) {
     this.agentId = agentId;
-    this.method = 'HMAC-SHA256';
+    this.method = 'file';
     this._keyDir = path.join(os.homedir(), '.agentsign', 'keys');
     this._keyPath = path.join(this._keyDir, `${agentId}.key`);
     this._key = null;
@@ -58,7 +58,7 @@ class FileSigner {
 class PKCS11Signer {
   constructor(agentId, config) {
     this.agentId = agentId;
-    this.method = 'PKCS11-ECDSA-P256';
+    this.method = 'pkcs11';
     this._config = config || {};
     this._session = null;
     this._pkcs11 = null;
@@ -89,32 +89,32 @@ class PKCS11Signer {
     const slot = slots[this._config.slot || 0];
     if (slot === undefined) throw new AgentSignError('No PKCS#11 slot found', 'HSM');
 
-    this._session = this._pkcs11.C_OpenSession(slot, 4 /* CKF_SERIAL_SESSION */ | 2 /* CKF_RW_SESSION */);
+    this._session = this._pkcs11.C_OpenSession(slot, 4 | 2);
     if (this._config.pin) {
-      this._pkcs11.C_Login(this._session, 1 /* CKU_USER */, this._config.pin);
+      this._pkcs11.C_Login(this._session, 1, this._config.pin);
     }
 
-    // Find or generate ECDSA P-256 key pair labeled with agentId
+    // Find or generate key pair labeled with agentId
     const label = `agentsign-${this.agentId}`;
-    this._privateKey = this._findKey(3 /* CKO_PRIVATE_KEY */, label);
-    this._publicKey = this._findKey(2 /* CKO_PUBLIC_KEY */, label);
+    this._privateKey = this._findKey(3, label);
+    this._publicKey = this._findKey(2, label);
 
     if (!this._privateKey) {
-      // Generate key pair
+      // Generate key pair on HSM
       const keys = this._pkcs11.C_GenerateKeyPair(
         this._session,
-        { mechanism: 0x00001041 /* CKM_EC_KEY_PAIR_GEN */ },
+        { mechanism: 0x00001041 },
         [
-          { type: 0x00000003 /* CKA_LABEL */, value: label },
-          { type: 0x00000162 /* CKA_EC_PARAMS */, value: Buffer.from('06082a8648ce3d030107', 'hex') }, // P-256 OID
-          { type: 0x00000108 /* CKA_VERIFY */, value: true },
-          { type: 0x00000001 /* CKA_TOKEN */, value: true },
+          { type: 0x00000003, value: label },
+          { type: 0x00000162, value: Buffer.from('06082a8648ce3d030107', 'hex') },
+          { type: 0x00000108, value: true },
+          { type: 0x00000001, value: true },
         ],
         [
-          { type: 0x00000003 /* CKA_LABEL */, value: label },
-          { type: 0x00000107 /* CKA_SIGN */, value: true },
-          { type: 0x00000001 /* CKA_TOKEN */, value: true },
-          { type: 0x00000104 /* CKA_SENSITIVE */, value: true },
+          { type: 0x00000003, value: label },
+          { type: 0x00000107, value: true },
+          { type: 0x00000001, value: true },
+          { type: 0x00000104, value: true },
         ]
       );
       this._publicKey = keys.publicKey;
@@ -124,8 +124,8 @@ class PKCS11Signer {
 
   _findKey(objClass, label) {
     this._pkcs11.C_FindObjectsInit(this._session, [
-      { type: 0x00000000 /* CKA_CLASS */, value: objClass },
-      { type: 0x00000003 /* CKA_LABEL */, value: label },
+      { type: 0x00000000, value: objClass },
+      { type: 0x00000003, value: label },
     ]);
     const objs = this._pkcs11.C_FindObjects(this._session, 1);
     this._pkcs11.C_FindObjectsFinal(this._session);
@@ -135,9 +135,8 @@ class PKCS11Signer {
   sign(hash) {
     this._load();
     const buf = Buffer.from(hash, 'hex');
-    this._pkcs11.C_SignInit(this._session, { mechanism: 0x00001044 /* CKM_ECDSA_SHA256 */ }, this._privateKey);
+    this._pkcs11.C_SignInit(this._session, { mechanism: 0x00001044 }, this._privateKey);
     const sig = this._pkcs11.C_Sign(this._session, buf, Buffer.alloc(64));
-    // Convert raw r||s (32+32 bytes) to hex
     return sig.toString('hex');
   }
 
@@ -145,7 +144,7 @@ class PKCS11Signer {
     this._load();
     const buf = Buffer.from(hash, 'hex');
     const sig = Buffer.from(signature, 'hex');
-    this._pkcs11.C_VerifyInit(this._session, { mechanism: 0x00001044 /* CKM_ECDSA_SHA256 */ }, this._publicKey);
+    this._pkcs11.C_VerifyInit(this._session, { mechanism: 0x00001044 }, this._publicKey);
     try {
       this._pkcs11.C_Verify(this._session, buf, sig);
       return true;
@@ -165,12 +164,12 @@ class PKCS11Signer {
 }
 
 // ── AWSKMSSigner ────────────────────────────────────────────────────
-// AWS KMS / CloudHSM — signs with customer-managed ECDSA key
+// AWS KMS / CloudHSM — signs with customer-managed key
 
 class AWSKMSSigner {
   constructor(agentId, config) {
     this.agentId = agentId;
-    this.method = 'AWS-KMS-ECDSA-P256';
+    this.method = 'aws-kms';
     this._config = config || {};
     this._client = null;
   }
@@ -189,7 +188,7 @@ class AWSKMSSigner {
     this._KMSClient = KMSClient;
     this._SignCommand = SignCommand;
     this._VerifyCommand = VerifyCommand;
-    this._client = new KMSClient({ region: this._config.region || 'eu-west-2' });
+    this._client = new KMSClient({ region: this._config.region || 'us-east-1' });
     this._keyId = this._config.keyId;
     if (!this._keyId) throw new AgentSignError('aws.keyId is required', 'CONFIG');
   }
@@ -234,7 +233,7 @@ class AWSKMSSigner {
 class AzureKVSigner {
   constructor(agentId, config) {
     this.agentId = agentId;
-    this.method = 'AZURE-KV-ECDSA-P256';
+    this.method = 'azure-keyvault';
     this._config = config || {};
     this._client = null;
   }
@@ -285,12 +284,12 @@ class AzureKVSigner {
 }
 
 // ── GCPKMSSigner ────────────────────────────────────────────────────
-// GCP Cloud KMS — signs with customer-managed ECDSA key
+// GCP Cloud KMS — signs with customer-managed key
 
 class GCPKMSSigner {
   constructor(agentId, config) {
     this.agentId = agentId;
-    this.method = 'GCP-KMS-ECDSA-P256';
+    this.method = 'gcp-kms';
     this._config = config || {};
     this._client = null;
   }
@@ -320,7 +319,6 @@ class GCPKMSSigner {
 
   async verify(hash, signature) {
     await this._load();
-    // GCP KMS verify requires the public key -- fetch and verify locally
     try {
       const [pubKeyResp] = await this._client.getPublicKey({ name: this._keyName });
       const pubKey = crypto.createPublicKey(pubKeyResp.pem);
@@ -343,7 +341,7 @@ class GCPKMSSigner {
 class VaultSigner {
   constructor(agentId, config) {
     this.agentId = agentId;
-    this.method = 'VAULT-TRANSIT';
+    this.method = 'vault';
     this._config = config || {};
     this._addr = this._config.addr;
     this._token = this._config.token;
@@ -364,7 +362,6 @@ class VaultSigner {
     });
     if (!res.ok) throw new AgentSignError(`Vault sign failed: ${res.status}`, 'VAULT');
     const data = await res.json();
-    // Vault returns "vault:v1:base64signature"
     const sigB64 = data.data.signature.split(':').pop();
     return Buffer.from(sigB64, 'base64').toString('hex');
   }
