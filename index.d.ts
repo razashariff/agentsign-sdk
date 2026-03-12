@@ -20,7 +20,7 @@ export interface AgentSignConfig {
   gcp?: GCPConfig;
   /** HashiCorp Vault Transit config */
   vault?: VaultConfig;
-  /** ProofX creator_id for identity link */
+  /** External identity anchor */
   creatorId?: string;
 }
 
