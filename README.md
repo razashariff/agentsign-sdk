@@ -6,7 +6,7 @@
     <a href="https://www.npmjs.com/package/agentsign"><img src="https://img.shields.io/npm/dm/agentsign" alt="downloads"></a>
     <a href="https://github.com/razashariff/agentsign-sdk"><img src="https://img.shields.io/github/stars/razashariff/agentsign-sdk?style=social" alt="stars"></a>
     <a href="https://github.com/razashariff/agentsign-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
-    <a href="https://agentsearch.cybersecai.co.uk/trust"><img src="https://agentsearch.cybersecai.co.uk/badge/agentsign" alt="AgenticSearch Trust"></a>
+    <a href="https://agentsearch.cybersecai.co.uk/trust"><img src="https://agentsearch.cybersecai.co.uk/badge/agentsign?v=1" alt="AgenticSearch Trust"></a>
   </p>
   <p align="center">
     <a href="https://colab.research.google.com/github/razashariff/agentsign-sdk/blob/main/agentsign_demo.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a>
