@@ -34,7 +34,7 @@
     "azure"
   ],
   "author": "CyberSecAI Ltd <contact@agentsign.ai>",
-  "license": "MIT",
+  "license": "BSL-1.1",
   "homepage": "https://agentsign.dev",
   "repository": {
     "type": "git",

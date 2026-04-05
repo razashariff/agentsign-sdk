@@ -5,7 +5,7 @@
     <a href="https://www.npmjs.com/package/agentsign"><img src="https://img.shields.io/npm/v/agentsign?color=blue" alt="npm"></a>
     <a href="https://www.npmjs.com/package/agentsign"><img src="https://img.shields.io/npm/dm/agentsign" alt="downloads"></a>
     <a href="https://github.com/razashariff/agentsign-sdk"><img src="https://img.shields.io/github/stars/razashariff/agentsign-sdk?style=social" alt="stars"></a>
-    <a href="https://github.com/razashariff/agentsign-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+    <a href="https://github.com/razashariff/agentsign-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-BSL%201.1-green" alt="license"></a>
     <a href="https://agentsearch.cybersecai.co.uk/trust"><img src="https://agentsearch.cybersecai.co.uk/badge/agentsign?v=2" alt="AgenticSearch Trust"></a>
   </p>
   <p align="center">
@@ -223,6 +223,6 @@ PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT. Patent Pending.
+BSL 1.1. Patent Pending.
 
 Built by [CyberSecAI](https://cybersecai.com). Website: [agentsign.dev](https://agentsign.dev).

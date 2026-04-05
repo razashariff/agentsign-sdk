@@ -1,21 +1,22 @@
-MIT License
+Business Source License 1.1
 
-Copyright (c) 2026 CyberSecAI Ltd
+Licensor: CyberSecAI Ltd
+Licensed Work: agentsign-sdk and all versions
+Change Date: 2030-04-05
+Change License: Apache License, Version 2.0
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Additional Use Grant:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You may use the Licensed Work for non-commercial purposes, including:
+  - Personal security research and learning
+  - Academic and educational use
+  - Internal security testing within your organisation
+  - Contributing to the Licensed Work
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+For commercial use (including offering the Licensed Work as a
+hosted service, incorporating it into a commercial product, or
+reselling it), you must obtain a commercial license from the
+Licensor. Contact: contact@agentsign.dev
+
+CyberSecAI Ltd
+cybersecai.co.uk
